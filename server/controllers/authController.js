@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
 import transporter from "../config/nodemailer.js";
+import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from "../config/emailTemplates.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -128,9 +129,10 @@ export const sendVerifyOtp = async (req, res) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: user.email,
-      subject: "Your Verification OTP",
-      text: `Hello ${user.name}. \n\n Your OTP for email verification is ${otp}. It is valid for 10 minutes.\n\n If you did not request this, please ignore this email.
-        \n\nBest regards, \nDeveloperSouls`
+      subject: "Account Verification OTP",
+      // text: `Hello ${user.name}. \n\n Your OTP for email verification is ${otp}. It is valid for 10 minutes.\n\n If you did not request this, please ignore this email.
+      //   \n\nBest regards, \nDeveloperSouls`,
+      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     }
 
     await transporter.sendMail(mailOptions);
@@ -219,15 +221,46 @@ export const sendResetPasswordOtp = async (req, res) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: user.email,
-      subject: "Password reset OTP",
-      text: `Hello ${user.name}. \n Your OTP for resetting your password is ${otp}. It is valid for 15 minutes.\n If you did not request this, please ignore this email.
-        \n\nBest regards, \nDeveloperSouls`
+      subject: "Password Reset OTP",
+      // text: `Hello ${user.name}. \n Your OTP for resetting your password is ${otp}. It is valid for 15 minutes.\n If you did not request this, please ignore this email.
+      //   \n\nBest regards, \nDeveloperSouls`,
+      html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace("{{email}}", user.email)
     }
 
     await transporter.sendMail(mailOptions);
 
     res.status(200).json({ success: true, message: "Verification OTP sent to your email" });
 
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+// verify reset password otp
+export const verifyResetOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, message: "All fields are required" });
+  }
+
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    if (user.resetOtp !== otp) {
+      return res.status(400).json({ success: false, message: "Invalid OTP" });
+    }
+
+    if (user.resetOtpExpireAt < Date.now()) {
+      return res.status(400).json({ success: false, message: "OTP has expired" });
+    }
+
+    return res.status(200).json({ success: true, message: "OTP verified successfully" });
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
