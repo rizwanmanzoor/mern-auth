@@ -1,16 +1,44 @@
-# React + Vite
+# MERN Authentication System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A secure full-stack authentication application built using the MERN stack (MongoDB, Express.js, React.js, Node.js), featuring complete user registration, login workflows, and protected routes.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Overview
 
-## React Compiler
+This project demonstrates core full-stack security and session management practices, handling everything from backend API endpoints and password hashing to frontend state management and route protection.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### **Backend (`/server`):**
+- **Node.js & Express.js:** RESTful API routing and server architecture.
+- **MongoDB & Mongoose:** Database modeling and user schema management.
+- **Security & Auth:** JWT (JSON Web Tokens), bcrypt for password hashing, and cookie/session handling.
+
+### **Frontend (`/client`):**
+- **React.js:** Component-driven user interface and form handling.
+- **Styling:** Modern responsive UI design.
+- **State & Routing:** Managing authentication states and protected application views.
+
+---
+
+## ✨ Key Features
+
+- **User Registration & Login:** Secure signup and signin forms with input validation.
+- **Password Encryption:** Hashing user passwords securely using `bcrypt` before storing in MongoDB.
+- **JWT Authentication:** Token-based session authentication for secure API communication.
+- **Protected Routes:** Restricting access to authenticated users only.
+- **Modular Architecture:** Clean separation of concerns with a dedicated `client` (frontend) and server structure.
+
+---
+
+## 💻 Professional Context
+
+Developed as part of my continuous exploration into full-stack architecture, API integrations, and backend security implementations alongside my core expertise as a **Senior Frontend Developer**.
+
+- **Portfolio:** [rizwanmanzoor.netlify.app](https://rizwanmanzoor.netlify.app/)
+- **LinkedIn:** [linkedin.com/in/rizwan-manzoor](https://www.linkedin.com/in/rizwan-manzoor)
+
+---
